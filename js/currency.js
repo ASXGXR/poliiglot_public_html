@@ -1,3 +1,7 @@
+// ===============================
+//      EXCHANGE RATE FETCHING
+// ===============================
+
 // Fetch exchange rate from API
 const fetchExchangeRate = async (from, to) => {
   try {
@@ -18,13 +22,20 @@ const updateExchangeRates = async () => {
   const inputs = document.querySelectorAll(".currency-input");
   const fromCurrency = inputs[0].dataset.currency;
   const toCurrency = inputs[1].dataset.currency;
+
   exchangeRates[fromCurrency] = {};
   exchangeRates[toCurrency] = {};
+
   // Fetch both conversion rates
   exchangeRates[fromCurrency][toCurrency] = await fetchExchangeRate(fromCurrency, toCurrency);
   exchangeRates[toCurrency][fromCurrency] = await fetchExchangeRate(toCurrency, fromCurrency);
+
   console.log("Exchange rates updated:", exchangeRates);
 };
+
+// ===============================
+//      CURRENCY CONVERSION
+// ===============================
 
 // Convert currency between the two input fields
 const convertCurrency = (input, isBase) => {
@@ -34,11 +45,12 @@ const convertCurrency = (input, isBase) => {
   const fromCurrency = fromInput.dataset.currency;
   const toCurrency = toInput.dataset.currency;
   let value = fromInput.value.replace(/[^0-9.]/g, ""); // Remove non-numeric characters except '.'
+
   // Trim to 2 decimal places
   if (value.includes(".")) {
     const parts = value.split(".");
     if (parts[1]?.length > 2) {
-      value = `${parts[0]}.${parts[1].slice(0, 2)}`; 
+      value = `${parts[0]}.${parts[1].slice(0, 2)}`;
     }
   }
 
@@ -51,59 +63,59 @@ const convertCurrency = (input, isBase) => {
   }
 };
 
-// Attach event listeners to both currency input fields
+// Attach event listeners to currency input fields
 document.querySelectorAll(".currency-input").forEach((input, index) => {
   input.addEventListener("input", () => convertCurrency(input, index === 0));
 });
 
-// Fetch exchange rates when the page loads
-document.addEventListener("DOMContentLoaded", updateExchangeRates);
+// ===============================
+//      OVERLAY HANDLING
+// ===============================
 
-
-
-
-// Opening Overlay when clicked
-document.getElementById("currency-box1").addEventListener("click", function () {
-  currentBox = "box1";
-  openOverlay();
-});
-document.getElementById("currency-box2").addEventListener("click", function () {
-  currentBox = "box2";
-  openOverlay();
-});
-function openOverlay() {
+// Open currency selection overlay
+function openCurrencyOverlay() {
   const overlay = document.getElementById("currency-overlay");
   overlay.style.display = "flex";
-  overlay.style.opacity = 0;
+  overlay.style.opacity = "0";
+
   setTimeout(() => {
     overlay.style.opacity = "1";
   }, 10); // Small delay to allow the display change to take effect
-  document.querySelector('.langchoice-input input[type="text"]').focus();
+
+  document.getElementById("currency-input").focus();
 }
-function closeOverlay() {
+
+// Close currency selection overlay
+function closeCurrencyOverlay() {
   const overlay = document.getElementById("currency-overlay");
   overlay.style.opacity = "0";
+
   setTimeout(() => {
     overlay.style.display = "none";
   }, 300); // Match the delay to the CSS transition duration (300ms)
 }
 
+// Attach event listeners to open the overlay when clicked
+document.getElementById("currency-box1").addEventListener("click", openCurrencyOverlay);
+document.getElementById("currency-box2").addEventListener("click", openCurrencyOverlay);
 
-// DOC FULLY LOADED
+// ===============================
+//      DOCUMENT READY EVENTS
+// ===============================
+
 document.addEventListener("DOMContentLoaded", () => {
+  // Fetch exchange rates on load
+  updateExchangeRates();
 
+  // Confirm button opacity update
+  const currencyInput = document.getElementById("currency-input");
+  const currencyConfirm = document.getElementById("currency-confirm");
 
-  // Confirm Button Opacity
-  const input = document.getElementById("currency-input");
-  const confirm = document.getElementById("currency-confirm");
-
-  if (input && confirm) {
-    input.addEventListener("input", () => {
-      confirm.style.opacity = input.value.trim() ? 0.8 : 0.4;
-      confirm.style.cursor = input.value.trim() ? "pointer" : "default";
+  if (currencyInput && currencyConfirm) {
+    currencyInput.addEventListener("input", () => {
+      const hasText = currencyInput.value.trim() !== "";
+      currencyConfirm.style.opacity = hasText ? "0.8" : "0.4";
+      currencyConfirm.style.cursor = hasText ? "pointer" : "default";
     });
   }
-
-
-
 });
