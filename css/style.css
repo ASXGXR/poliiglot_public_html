@@ -181,14 +181,23 @@ body {
   background: rgba(0, 0, 0, 0.08);
 }
 
-.nav-item img {
+.nav-item img,
+.library-img-container {
   width: 28px; height: 28px;
 }
 
+.library-img-container {
+  overflow: hidden;
+  display: flex;
+  align-items: center; justify-content: center;
+  box-sizing: border-box;
+  border: 2.2px solid white;
+  border-radius: 50%;
+}
+
 .nav-item img[alt="Library"] {
-  object-fit: contain;
-  box-shadow: inset 0 0 0 2.2px white;
-  border-radius: 12px;
+  width: 36px; height: 36px;
+  padding: 2.2px;
 }
 
 .nav-item p {
@@ -944,15 +953,13 @@ h3 {
   }
 
   .navbar {
-    box-sizing: border-box;
-    position: absolute;
-    transform: unset;
     border-radius: unset;
+    transform: unset;
     left: 0;
     top: 0;
-    margin: 0;
-    padding: 0;
-    gap: 8px;
+    margin: 0; padding: 0 8px;
+    
+    gap: 16px;
     flex-direction: column;
     height: 100vh;
     width: 100px;
@@ -962,31 +969,10 @@ h3 {
   }
 
   .nav-item {
-    display: flex;
-    flex-direction: column;
-    padding: 32px;
-    margin: 0;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .nav-item img {
-    padding: 0;
-    margin: 0;
-  }
-
-  .nav-item img[src*="settings.svg"] {
-    padding: 0;
-    margin: 0;
-  }
-
-  .nav-item img[src*="translator.svg"] {
-    padding: 0;
-    margin: 0;
+    width: 88px; height: 88px;
   }
 
   .nav-item p {
-    margin: 0;
     font-size: 12px;
   }
 

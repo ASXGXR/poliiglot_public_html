@@ -1,0 +1,92 @@
+<!-- login.html -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Poliiglot</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/login.css">
+  <link rel="icon" href="images/favicon.ico" type="image/x-icon" />
+</head>
+<body>
+
+  <a href="poliiglot.com">
+    <img class="top-logo" src="images/logo-purple.svg">
+  </a>
+  
+  <div class="container" id="container">
+    
+    <div class="form-container sign-up-container">
+      <form action="/signup" method="post">
+        <h1>Create Account!</h1>
+        <div class="inputs">
+          <input type="email" placeholder="Email" name="email" autocomplete="email" required />
+          <input type="password" placeholder="Password" name="password" autocomplete="new-password" required />
+        </div>
+        <button type="submit" id="signup-button">Sign Up</button>
+        <p class="tos-text">By signing up you agree to our <a href="terms-of-service-link">terms of service</a> and <a href="privacy-policy-link">privacy policy</a>.</p>
+      </form>
+    </div>
+    
+    <div class="form-container sign-in-container">
+      <form action="/login" method="post">
+        <h1>Sign In</h1>
+        <div class="inputs">
+          <input type="email" placeholder="Email" name="email" autocomplete="email" required />
+          <input type="password" placeholder="Password" name="password" autocomplete="current-password" required />
+        </div>
+        <button type="submit" id="login-button">Sign In</button>
+        <a href="#">Forgot your password?</a>
+      </form>
+    </div>
+    
+
+    <!-- Switching -->
+    <div class="overlay-container">
+      <div class="register-overlay">
+        <div class="overlay-panel overlay-left">
+          <h1>Welcome!</h1>
+          <p class="or-divider">Have an account?</p>
+          <button class="ghost" id="signIn">Sign In</button>
+        </div>
+        <div class="overlay-panel overlay-right">
+          <!-- <h1>Welcome Back!</h1> -->
+          <p class="or-divider">Need an account?</p>
+          <button class="ghost" id="signUp">Sign Up</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Firebase Installation -->
+
+  <script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-analytics.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+  
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+      apiKey: "AIzaSyAAZMIK0U9JeKgcSnkUUW2ALJLBQBHqyeo",
+      authDomain: "poliiglot-e244a.firebaseapp.com",
+      projectId: "poliiglot-e244a",
+      storageBucket: "poliiglot-e244a.firebasestorage.app",
+      messagingSenderId: "913488977751",
+      appId: "1:913488977751:web:73d6959b5b10f7e0dee812",
+      measurementId: "G-FFPY4W9HBR"
+    };
+  
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+  </script>
+
+  <script src="js/login.js" type="module"></script>
+  
+</body>
+</html>
