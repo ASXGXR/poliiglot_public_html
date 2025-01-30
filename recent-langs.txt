@@ -1,0 +1,3 @@
+Parisian French|https://upload.wikimedia.org/wikipedia/commons/c/c3/Flag_of_France.svg|Paris, France
+Herzegovinian Štokavian|https://upload.wikimedia.org/wikipedia/commons/5/58/Flag_of_Croatia_at_the_UN.svg|Medjugorje, Croatia
+Moroccan Arabic|https://upload.wikimedia.org/wikipedia/commons/2/2c/Flag_of_Morocco.svg|Morocco

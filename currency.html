@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Currency Converter</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/currency.css">
+  <link rel="icon" href="images/favicon.ico" type="image/x-icon" />
+</head>
+
+<body>
+
+  <div class="language-section">
+
+    <!-- Currency 1 -->
+    <div class="currency-row">
+      <div class="lang-box" id="currency-box1">
+        <div class="flag">
+          <img src="https://upload.wikimedia.org/wikipedia/en/b/be/Flag_of_England.svg" alt="English flag" width="26" height="26" loading="eager"/>
+        </div>
+        <div class="box-text" id="box-text-1" lang="en">(£) GBP</div>
+      </div>
+      <div class="vert-line"></div>
+      <div class="amount-box">
+        <span>£</span>
+        <input type="text" class="currency-input" data-currency="GBP" placeholder="0.00">
+      </div>
+    </div>
+
+    <!-- Currency 2 -->
+    <div class="currency-row">
+      <div class="lang-box" id="currency-box2">
+        <div class="flag">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Flag_of_France.svg" alt="French flag" width="26" height="26" loading="eager"/>
+        </div>
+        <div class="box-text" id="box-text-2" lang="en">(€) EUR</div>
+      </div>
+      <div class="vert-line"></div>
+      <div class="amount-box">
+        <span>€</span>
+        <input type="text" class="currency-input" data-currency="EUR" placeholder="0.00">
+      </div>
+    </div>
+
+    <div class="keypad">
+      <button>1</button> <button>2</button> <button>3</button>
+      <button>4</button> <button>5</button> <button>6</button>
+      <button>7</button> <button>8</button> <button>9</button>
+      <button>.</button> <button>0</button> <button class="delete">⌫</button>
+    </div>
+
+
+
+
+    <!-- Overlay -->
+
+    <div class="overlay" id="currency-overlay">
+      <div class="langchoice-content">
+    
+        <!-- Input Section -->
+        <div class="langchoice-input">
+          <img src="images/close.svg" class="close-btn" onclick="closeOverlay()"/>
+          <input id="currency-input" type="text" placeholder="Enter Currency Code or Country.."/>
+          <img src="images/confirm.svg" id="currency-confirm" class="confirm-arrow icon" alt="Confirm Arrow"/>
+        </div>
+    
+        <!-- Options Section -->
+        <div class="langchoice-options">
+    
+          <div class="section-title">
+            <p>Recently Used</p>
+            <button class="clear-btn" onclick="clearRecent()">Clear</button>
+          </div>
+    
+          <!-- Currency Options -->
+    
+          <div id="language-list"></div>
+    
+          <div class="section-title">
+            <p>Suggested</p>
+            <button class="clear-btn" onclick="clearRecent()">Clear</button>
+          </div>
+
+          <li onclick="confirmLanguage('GBP', 'https://upload.wikimedia.org/wikipedia/en/b/be/Flag_of_England.svg')">
+            <div class="flag">
+              <img src="https://upload.wikimedia.org/wikipedia/en/b/be/Flag_of_England.svg" />
+            </div>
+            <div class="langchoice-text">
+              GBP <small>British Pound (£)</small>
+            </div>
+          </li>
+    
+          <li onclick="confirmLanguage('USD', 'https://upload.wikimedia.org/wikipedia/commons/a/a4/Flag_of_the_United_States.svg')">
+            <div class="flag">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/a/a4/Flag_of_the_United_States.svg" />
+            </div>
+            <div class="langchoice-text">
+              USD <small>US Dollar ($)</small>
+            </div>
+          </li>
+    
+          <li onclick="confirmLanguage('EUR', 'https://upload.wikimedia.org/wikipedia/commons/b/b7/Flag_of_Europe.svg')">
+            <div class="flag">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/b/b7/Flag_of_Europe.svg" />
+            </div>
+            <div class="langchoice-text">
+              EUR <small>Euro (€)</small>
+            </div>
+          </li>
+        </div>
+      </div>
+    </div>
+    
+
+  </div>
+
+
+  <script src="js/currency.js"></script>
+</body>
+</html>

@@ -62,8 +62,6 @@ document.addEventListener("DOMContentLoaded", updateExchangeRates);
 
 
 
-
-
 // Opening Overlay when clicked
 document.getElementById("currency-box1").addEventListener("click", function () {
   currentBox = "box1";
@@ -90,15 +88,22 @@ function closeOverlay() {
   }, 300); // Match the delay to the CSS transition duration (300ms)
 }
 
-// Confirm Button Opacity
-const inputField = document.querySelector('.langchoice-input input[type="text"]');
-const confirmArrow = document.querySelector(".confirm-arrow");
-inputField.addEventListener("input", () => {
-  if (inputField.value.trim() !== "") {
-    confirmArrow.style.opacity = 0.8;
-    confirmArrow.style.cursor = "pointer";
-  } else {
-    confirmArrow.style.opacity = 0.4;
-    confirmArrow.style.cursor = "default";
+
+// DOC FULLY LOADED
+document.addEventListener("DOMContentLoaded", () => {
+
+
+  // Confirm Button Opacity
+  const input = document.getElementById("currency-input");
+  const confirm = document.getElementById("currency-confirm");
+
+  if (input && confirm) {
+    input.addEventListener("input", () => {
+      confirm.style.opacity = input.value.trim() ? 0.8 : 0.4;
+      confirm.style.cursor = input.value.trim() ? "pointer" : "default";
+    });
   }
+
+
+
 });
