@@ -40,6 +40,7 @@
   height: 64px;
 }
 .currency-page .box-text {
+  min-width: 53px;
   white-space: nowrap;
 }
 

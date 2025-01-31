@@ -262,7 +262,7 @@
           <div class="vert-line"></div>
           <div class="amount-box">
             <span>£</span>
-            <input type="text" class="currency-input" data-currency="GBP" placeholder="0.00">
+            <input type="text" id="currency-input1" class="currency-input" data-currency="GBP" placeholder="0.00" autocomplete="off" inputmode="decimal" aria-autocomplete="none">
           </div>
         </div>
     
@@ -277,7 +277,7 @@
           <div class="vert-line"></div>
           <div class="amount-box">
             <span>€</span>
-            <input type="text" class="currency-input" data-currency="EUR" placeholder="0.00">
+            <input type="text" id="currency-input2" class="currency-input" data-currency="EUR" placeholder="0.00" autocomplete="off" inputmode="decimal" aria-autocomplete="none">
           </div>
         </div>
     
@@ -298,7 +298,7 @@
             <div class="langchoice-input">
               <img src="images/close.svg" class="close-btn" onclick="closeCurrencyOverlay()"/>
               <input type="text" id="currency-input" placeholder="Enter Currency Code or Country.."/>
-              <img id="currency-confirm" src="images/confirm.svg" class="confirm-arrow icon" alt="Confirm Arrow"/>
+              <img id="currency-confirm" onclick="confirmCurrencySelection()" src="images/confirm.svg" class="confirm-arrow icon" alt="Confirm Arrow"/>
             </div>
         
             <!-- Options Section -->
