@@ -58,14 +58,14 @@ function closeCurrencyOverlay() {
   setTimeout(() => (overlay.style.display = "none"), 300);
 }
 
+let currentCurrencyBox = null; // Declares global variable
 // Opens overlay when either box clicked
-let currentCurrencyBox = null;
 document.getElementById("currency-box1").addEventListener("click", () => {
-  currentCurrencyBox = "currency-box1";
+  currentCurrencyBox = '1'
   openCurrencyOverlay();
 });
 document.getElementById("currency-box2").addEventListener("click", () => {
-  currentCurrencyBox = "currency-box2";
+  currentCurrencyBox = '2'
   openCurrencyOverlay();
 });
 
@@ -100,15 +100,26 @@ document.addEventListener("DOMContentLoaded", async () => {
 // ===============================
 
 async function confirmCurrencySelection() {
+  
+  // Gets user's inputted currency
   const input = document.getElementById("currency-input").value.trim().toUpperCase();
   if (!input) return;
 
+  // Check if currency in files
   const currencies = await (await fetch("js/currency-symbols.json")).json();
   const entry = currencies.find(c => c.abbreviation === input);
-  if (!entry) return errorShake(document.getElementById("currency-confirm"));
+  if (!entry) return errorShake(document.getElementById("currency-confirm")); // not found, exit function
+  const currencyAbbreviation = entry.abbreviation;
+  const currencySymbol = decodeHtmlEntities(entry.symbol);
 
-  const box = document.getElementById(currentCurrencyBox);
-  box.querySelector(".box-text").textContent = `(${decodeHtmlEntities(entry.symbol)}) ${entry.abbreviation}`;
+  // Update box value
+  document.querySelectorAll(`.currency-symbol${currentCurrencyBox}`)
+    .forEach(el => {
+      console.log(el);
+      el.textContent = currencySymbol;
+      el.classList.toggle("italic", /[A-Za-z]/.test(currencySymbol)); // Italicize if contains letters
+    });
+  document.getElementById(`currency-text-${currentCurrencyBox}`).textContent = currencyAbbreviation; // set currency text
 
   // Update exchange rate
   exchangeRate = (await fetchExchangeRate(
@@ -118,12 +129,13 @@ async function confirmCurrencySelection() {
 
   closeCurrencyOverlay();
 
-  // Extract country name & find flag
-  let nameParts = entry.currency.split(" ");
+  // Find & update flag
+  const box = document.getElementById(`currency-box${currentCurrencyBox}`);
+  let nameParts = entry.currency.split(" "); // split into words, removing 1 each time
   while (nameParts.pop() && !(box.querySelector(".flag img").src = await getFlagUrl(nameParts.join(" ")))) {}
 
   // Convert
-  convertCurrency(currentCurrencyBox === "currency-box1" ? 2 : 1);
+  convertCurrency(currentCurrencyBox);
 }
 
 // Decode currency symbols
