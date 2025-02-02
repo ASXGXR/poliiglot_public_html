@@ -47,19 +47,19 @@ const convertCurrency = (modifiedBox) => {
 
 // Keypad Function
 
-let activeInput = document.getElementById("currency-input1"); // Default to input 1
+let activeCurrencyInput = document.getElementById("currency-input1"); // Default to input 1
 // Track last focused input
 document.querySelectorAll(".currency-input").forEach(input => 
-  input.addEventListener("focus", () => activeInput = input)
+  input.addEventListener("focus", () => activeCurrencyInput = input)
 );
 // Handle keypad clicks
 document.querySelector(".keypad").addEventListener("click", (e) => {
-  if (!activeInput || !e.target.matches("button")) return;
+  if (!activeCurrencyInput || !e.target.matches("button")) return;
   let value = e.target.textContent;
-  if (value === "⌫") activeInput.value = activeInput.value.slice(0, -1);
-  else activeInput.value += value;
+  if (value === "⌫") activeCurrencyInput.value = activeCurrencyInput.value.slice(0, -1);
+  else activeCurrencyInput.value += value;
   // Manually trigger input event to update currency conversion
-  activeInput.dispatchEvent(new Event("input"));
+  activeCurrencyInput.dispatchEvent(new Event("input"));
 });
 
 
