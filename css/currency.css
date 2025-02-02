@@ -66,5 +66,5 @@
 }
 
 .currency-page .flag {
-  border: 1px solid var(--primary-color700);
+  /* border: 0.5px solid var(--primary-color700); */
 }

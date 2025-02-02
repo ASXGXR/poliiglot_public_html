@@ -25,20 +25,43 @@ let exchangeRate = 1;
 const extractCurrencyCode = (formattedCurrency) => formattedCurrency.replace(/\(.*?\)\s*/g, "").trim();
 
 // ===============================
-//      CURRENCY CONVERSION
+//      CURRENCY CONVERSION & FORMATTING
 // ===============================
 
 const convertCurrency = (modifiedBox) => {
   const input = document.getElementById(`currency-input${modifiedBox}`);
   const output = document.getElementById(`currency-input${modifiedBox === 1 ? 2 : 1}`);
 
-  let rawValue = input.value.replace(/[^0-9.]/g, "");
-  if (rawValue.includes(".")) rawValue = rawValue.split(".")[0] + "." + rawValue.split(".")[1].slice(0, 2);
+  let rawValue = input.value.replace(/[^0-9.]/g, ""); // Remove non-numeric characters
+  if (rawValue.includes(".")) rawValue = rawValue.split(".")[0] + "." + rawValue.split(".")[1].slice(0, 2); // Limit to 2 decimals
 
   let num = parseFloat(rawValue);
-  input.value = rawValue;
-  output.value = isNaN(num) ? "" : exchangeRate ? ((modifiedBox === 1 ? num * exchangeRate : num / exchangeRate) || 0).toFixed(2).replace(/\.?0+$/, "") : "N/A";
+  const format = (n) => {
+    let formatted = n.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+    return formatted.includes(".") ? parseFloat(n.toFixed(2)).toLocaleString() : formatted; // Ensure commas + decimals when needed
+  };
+
+  input.value = rawValue.replace(/\B(?=(\d{3})+(?!\d))/g, ","); // Format input with commas
+  output.value = isNaN(num) ? "" : exchangeRate ? format(modifiedBox === 1 ? num * exchangeRate : num / exchangeRate) : "N/A"; // Convert & format output
 };
+
+// Keypad Function
+
+let activeInput = document.getElementById("currency-input1"); // Default to input 1
+// Track last focused input
+document.querySelectorAll(".currency-input").forEach(input => 
+  input.addEventListener("focus", () => activeInput = input)
+);
+// Handle keypad clicks
+document.querySelector(".keypad").addEventListener("click", (e) => {
+  if (!activeInput || !e.target.matches("button")) return;
+  let value = e.target.textContent;
+  if (value === "⌫") activeInput.value = activeInput.value.slice(0, -1);
+  else activeInput.value += value;
+  // Manually trigger input event to update currency conversion
+  activeInput.dispatchEvent(new Event("input"));
+});
+
 
 // ===============================
 //      OVERLAY HANDLING
@@ -61,10 +84,12 @@ function closeCurrencyOverlay() {
 let currentCurrencyBox = null; // Declares global variable
 // Opens overlay when either box clicked
 document.getElementById("currency-box1").addEventListener("click", () => {
+  document.getElementById("currency-input").value = ''; // clears input
   currentCurrencyBox = '1'
   openCurrencyOverlay();
 });
 document.getElementById("currency-box2").addEventListener("click", () => {
+  document.getElementById("currency-input").value = '';
   currentCurrencyBox = '2'
   openCurrencyOverlay();
 });

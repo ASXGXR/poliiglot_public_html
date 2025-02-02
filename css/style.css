@@ -18,7 +18,7 @@
   --box-padding: 22px;
   --primary-color700-rgb: 147, 35, 168;
   --main-gradient: linear-gradient(to bottom, #9E2DB0, #672292);
-  --nav-width: 120px;
+  --nav-width: 100px;
 }
 
 /* DEFAULTS */
@@ -259,7 +259,7 @@ body {
   display: flex;
   position: relative;
   flex-shrink: 0;
-  border: 1px solid var(--primary-color700);
+  border: 0.5px solid var(--primary-color700);
   /* box-shadow: 0px 0px 1px var(--primary-color700); */
 }
 
@@ -728,7 +728,7 @@ h3 {
 .library-page,
 .settings-page,
 .currency-page {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
@@ -959,9 +959,9 @@ h3 {
     transform: unset;
     left: 0;
     top: 0;
-    margin: 0; padding: 0 8px;
+    margin: 0;
     
-    gap: 16px;
+    gap: 8px;
     height: 100%;
     width: var(--nav-width);
     z-index: 999;
