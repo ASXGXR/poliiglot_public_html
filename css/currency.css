@@ -56,7 +56,7 @@
 }
 
 .keypad button {
-  /* background: none; */
+  background: none;
   width: 100%;
   color: #565656;
   display: flex;
