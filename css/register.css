@@ -1,0 +1,138 @@
+* {
+  box-sizing: border-box;
+}
+
+
+p, ul {
+  margin: 0; padding: 0;
+}
+
+.register-logo {
+  width: 100px;
+  margin-bottom: 20px;
+}
+
+.horiz-line {
+  margin-top: -16px;
+  margin-bottom: -4px;
+  border-radius: 50%;
+  background: white;
+  height: 2px;
+  width: 100px;
+}
+
+h2 {
+  font-weight: 600;
+  color: white;
+}
+
+body {
+  padding: 10vmin;
+  font-family: var(--primary-font);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, var(--primary-color700), #2575FC);
+  color: #fff;
+}
+
+h1, .features, .subtitle {
+  font-family: 'Poppins', sans-serif;
+}
+
+label {
+  font-size: 13px;
+}
+
+.signup-container {
+  max-width: 600px;
+  width: 100%;
+  padding: 32px; /* 8 * 4 */
+  border-radius: var(--radius);
+  backdrop-filter: blur(10px);
+  text-align: center;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 40px;
+}
+
+h1 {
+  font-size: 28px; /* 6 * 4 */
+}
+
+.subtitle {
+  font-size: 12px; /* 3 * 4 */
+  opacity: 0.8;
+}
+
+.features {
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* 2 * 4 */
+  font-size: 14px; /* 3.5 * 4 */
+  text-align: left;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.features li {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* 2 * 4 */
+}
+
+form {
+  width: 92%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px; /* 4 * 4 */
+}
+
+.input-group {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* 2 * 4 */
+}
+
+input {
+  width: 100%;
+  padding: 12px; /* 3 * 4 */
+  border: none;
+  border-radius: 8px; /* 2 * 4 */
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  font-size: 16px; /* 4 * 4 */
+}
+
+input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.signup-btn {
+  margin-top: 24px;
+  font-weight: 600;
+  width: 100%;
+  background: var(--primary-color600);
+  border: none;
+  padding: 12px; /* 3 * 4 */
+  border-radius: 8px; /* 2 * 4 */
+  color: #fff;
+  font-size: 16px; /* 4 * 4 */
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.signup-btn:hover {
+  background: #FF4757;
+}
+
+.login-link {
+  font-size: 12px; /* 3 * 4 */
+}
+
+.login-link a {
+  color: #fff;
+  text-decoration: underline;
+}
