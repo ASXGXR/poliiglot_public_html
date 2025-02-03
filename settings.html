@@ -1,0 +1,62 @@
+<!-- settings.html -->
+
+<div class="settings-page">
+  <div class="settings-container settings-main">
+    <header class="settings-header">
+      <h1>Settings</h1>
+    </header>
+    <div class="settings-section">
+      <div class="settings-item">
+        <img src="icons/settings-icons/profile.svg">
+        Profile
+      </div>
+      <div class="settings-item" onclick="showVoiceOptions()">
+        <img src="icons/settings-icons/choose-voice.svg">
+        Choose Voice
+      </div>
+      <a href="https://insigh.to/b/poliiglot-bug-reporting" target="_blank" class="settings-item">
+        <img src="icons/settings-icons/report-bug.svg" class="red-icon">
+        <span>Report A Bug</span>
+        <i class="fas fa-external-link-alt"></i>
+      </a>
+      <a href="https://discord.gg/J8QsAfhfpP" target="_blank" class="settings-item">
+        <img src="icons/settings-icons/join-discord.svg" class="blue-icon">
+        <span>Join Discord</span>
+        <i class="fas fa-external-link-alt"></i>
+      </a>
+    </div>
+  </div>
+
+  <div class="settings-container choose-voice" style="display: none;">
+    <header class="settings-header">
+      <img src="icons/back-btn.svg" onclick="showSettings()" class="back-btn" alt="Back">
+      <h1>Choose Voice</h1>
+    </header>
+    <div class="settings-section">
+      <div class="settings-item" data-voice="alloy" onclick="selectVoice('alloy')">
+        <img src="icons/speak.svg">
+        Alloy
+      </div>
+      <div class="settings-item" data-voice="echo" onclick="selectVoice('echo')">
+        <img src="icons/speak.svg">
+        Echo
+      </div>
+      <div class="settings-item" data-voice="fable" onclick="selectVoice('fable')">
+        <img src="icons/speak.svg">
+        Fable
+      </div>
+      <div class="settings-item" data-voice="onyx" onclick="selectVoice('onyx')">
+        <img src="icons/speak.svg">
+        Onyx
+      </div>
+      <div class="settings-item" data-voice="nova" onclick="selectVoice('nova')">
+        <img src="icons/speak.svg">
+        Nova
+      </div>
+      <div class="settings-item" data-voice="shimmer" onclick="selectVoice('shimmer')">
+        <img src="icons/speak.svg">
+        Shimmer
+      </div>
+    </div>
+  </div>
+</div>
