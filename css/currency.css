@@ -71,10 +71,6 @@
   font-size: 20px;
 }
 
-.currency-page .flag {
-  /* border: 0.5px solid var(--primary-color700); */
-}
-
 /* Mobile (Smaller) Screen Sizes */
 @media (max-width: 768px) {
   .keypad {

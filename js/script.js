@@ -34,7 +34,7 @@ const easyTranslates = [
 
 // Api Key //
 
-let apiKey = "";
+let key = "";
 
 // Fetch API key from openai.php
 function getApi() {
@@ -45,7 +45,7 @@ function getApi() {
 
     if (xmlhttp.status === 200) {
       const response = JSON.parse(xmlhttp.responseText || "{}");
-      return response.apiKey || console.warn("Error retrieving API key:", response.error) || "";
+      return response.key || console.warn("Error retrieving API key:", response.error) || "";
     }
     console.error(`Failed to fetch API key: ${xmlhttp.statusText}`);
   } catch (e) {
@@ -56,18 +56,18 @@ function getApi() {
 
 // Show the API key input box if fetching fails
 function handleApiKey() {
-  apiKey = getApi();
-  document.getElementById("apiKeyContainer").style.display = apiKey ? "none" : "flex";
-  console[apiKey ? "log" : "warn"](apiKey ? "Using fetched API key." : "API key fetch failed, showing input box.");
+  key = getApi();
+  document.getElementById("apiKeyContainer").style.display = key ? "none" : "flex";
+  console[key ? "log" : "warn"](key ? "Using fetched API key." : "API key fetch failed, showing input box.");
 }
+
 // Set API key from input box
 function setApiKey() {
   const input = document.getElementById("apiKeyInput").value.trim();
-  apiKey = input || apiKey;
-  console[input ? "log" : "error"](input ? `API key saved: ${apiKey}` : "No API key entered.");
+  key = input || key;
+  console[input ? "log" : "error"](input ? `API key saved: ${key}` : "No API key entered.");
   if (input) alert("API key has been saved.");
 }
-
 
 
 
