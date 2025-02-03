@@ -65,8 +65,7 @@ function handleApiKey() {
 function setApiKey() {
   const input = document.getElementById("apiKeyInput").value.trim();
   key = input || key;
-  console[input ? "log" : "error"](input ? `API key saved: ${key}` : "No API key entered.");
-  if (input) alert("API key has been saved.");
+  document.getElementById('apiKeyContainer').style.display = 'none';
 }
 
 
