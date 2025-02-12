@@ -1,0 +1,447 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Poliiglot</title>
+
+    <!-- STYLES -->
+    <link rel="stylesheet" href="css/style.css" class="css-loader">
+
+    <!-- SCRIPTS -->
+    <script src="js/script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js" defer></script>
+
+    <!-- Preconnect to external resources -->
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon" />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" media="print" onload="this.media='all'">
+  
+  </head>
+
+
+  <body>
+
+    <!-- LOAD SCREEN -->
+    <div class="load-screen" style="--speed: 0.5s;">
+      <div class="loader-container">
+        <div class="bouncing-dots">
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+        </div>
+      </div>
+      <script>
+        // Hide load screen
+        function hideLoadScreen() {
+          document.querySelector('.load-screen').style.display = 'none';
+        }
+      
+        // Check if CSS has loaded
+        function checkCSSLoaded() {
+          const cssLinks = document.querySelectorAll('.css-loader');
+          let loadedCount = 0;
+          // Ensure the load screen is hidden after a delay (fallback)
+          let fallbackTimeout = setTimeout(hideLoadScreen, 2000);
+          cssLinks.forEach(link => {
+            // Listen for the load event
+            link.addEventListener('load', () => {
+              loadedCount++;
+              if (loadedCount === cssLinks.length) {
+                clearTimeout(fallbackTimeout); // Clear fallback
+                hideLoadScreen();
+              }
+            });
+      
+            // If already loaded (from cache), manually increment count
+            if (link.sheet && link.sheet.cssRules) {
+              loadedCount++;
+              if (loadedCount === cssLinks.length) {
+                clearTimeout(fallbackTimeout); // Clear fallback
+                hideLoadScreen();
+              }
+            }
+          });
+        }
+        // Run the check
+        checkCSSLoaded();
+      </script>
+    </div>
+
+    <!-- Input box for API Key (hidden by default) -->
+    <div id="apiKeyContainer" style="display: none; padding: 10px; background-color: #f0f0f0; text-align: center; margin: 24px; gap: 16px;">
+      <label for="apiKeyInput" style="display: flex; flex-direction: column;"><span style="color: red;">SERVER ERROR</span><span>Couldn't get API Key</span></label>
+      <input type="text" id="apiKeyInput" placeholder="Enter your OpenAI key to use" style="width: 300px; padding: 5px;" />
+      <button onclick="setApiKey()" style="height: min-height;">Apply</button>
+    </div>
+
+
+    <!-- MAIN PAGE -->
+    <div class="translator-wrapper page-wrapper">
+
+      <!-- Language Section -->
+
+      <div class="language-section">
+        <div class="lang-box" id="box1">
+          <div class="flag">
+            <img src="https://upload.wikimedia.org/wikipedia/en/b/be/Flag_of_England.svg" alt="English flag" width="26" height="26" loading="eager"/>
+          </div>
+          <div class="box-text" id="box-text-1" lang="en">English</div>
+        </div>
+        <div class="arrow icon">→</div>
+        <div class="lang-box" id="box2">
+          <div class="flag">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Flag_of_France.svg" alt="French flag" width="26" height="26" loading="eager"/>
+          </div>
+          <div class="box-text" id="box-text-2" lang="en">Parisian French</div>
+        </div>
+      </div>
+
+
+      <!-- Overlay -->
+
+      <div class="overlay" id="langchoice-overlay">
+        <div class="langchoice-content">
+
+          <!-- Input Section -->
+          <div class="langchoice-input">
+            <img src="images/close.svg" class="close-btn" onclick="closeOverlay()"/>
+            <input type="text" id="lang-input" placeholder="Enter Language or Place.."/>
+            <img src="images/confirm.svg" class="confirm-arrow icon" alt="Confirm Arrow"/>
+          </div>
+
+          <!-- Options Section -->
+          <div class="langchoice-options">
+            <li onclick="confirmLanguage('Detect Language', 'icons/ai-stars.svg')">
+              <img src="images/ai-stars.svg" class="flag stars" />
+              <div class="langchoice-text">Detect Language</div>
+            </li>
+            <div class="section-title">
+              <p class="recently-used">Recently Used</p>
+              <button class="clear-btn" onclick="clearRecent()">Clear</button>
+            </div>
+
+            <!-- Language Options -->
+
+            <div id="language-list"></div>
+
+            <div class="section-title">
+              <p>My Languages</p>
+            </div>
+            <li onclick="confirmLanguage('English', 'https://upload.wikimedia.org/wikipedia/en/b/be/Flag_of_England.svg')" >
+              <div class="flag">
+                <img src="https://upload.wikimedia.org/wikipedia/en/b/be/Flag_of_England.svg" />
+              </div>
+              <div class="langchoice-text">
+                English
+                <small>England</small>
+              </div>
+            </li>
+          </div>
+        </div>
+      </div>
+
+
+
+      <!-- Text Input Section -->
+
+      <!-- Input1 -->
+      <div class="input-container input1">
+        <h3 class="language-label">English</h3>
+        <div class="input-wrapper">
+          <div
+            class="text-input"
+            id="text-input1"
+            contenteditable="true"
+            onfocus="clearPlaceholder(this)"
+            data-placeholder="Enter text to translate.."
+          ></div>
+          <img
+            src="images/microphone.svg"
+            class="icon"
+            id="recordButton1"
+            onclick="toggleRecording(1)"
+          />
+        </div>
+        <div class="char-limit" id="char-limit1">0</div>
+      </div>
+
+      <!-- Translate Button -->
+
+      <div class="translate-section">
+        <div class="charges">
+          <!-- <img src="images/infinity.svg" alt="Infinity Sign" class="infinity" /> -->
+          60
+          <img src="images/charge.svg" class="icon"/>
+        </div>
+        <img src="images/switch-arrow.svg" alt="Switch Arrow" class="icon" />
+        <button class="translate-button">TRANSLATE</button>
+      </div>
+
+      <!-- Input2 -->
+
+      <div class="input-container input2">
+        <h3 class="language-label">Parisian French</h3>
+        <div class="input-wrapper">
+          <div
+            class="text-input"
+            id="text-input2"
+            contenteditable="true"
+            onfocus="clearPlaceholder(this)"
+            data-placeholder="Saisissez le texte à traduire.."
+          ></div>
+          <img
+            src="images/microphone.svg"
+            id="recordButton2"
+            class="icon"
+            onclick="toggleRecording(2)"
+          />
+          <audio id="audioPlayer"></audio>
+          <img
+            src="images/speak.svg"
+            alt="Speak"
+            id="playButton"
+            class="icon"
+            onclick="document.getElementById('audioPlayer').play()"
+          />
+        </div>
+        <div class="char-limit" id="char-limit2">0</div>
+      </div>
+    </div>
+
+    <!-- NAV BAR -->
+    <div id="nav-placeholder"></div>
+    <script src="js/nav.js"></script>
+
+
+    <!-- LIBRARY PAGE (HIDDEN INITIALLY) -->
+    <div class="library-page page-wrapper">
+      <img src="images/slanted-globe.svg" class="globe" />
+      <div class="no-lang-wrapper">
+        <h1 class="no-lang-title">No Language Selected</h1>
+        <button><span>SELECT LANGUAGE</span></button>
+      </div>
+    </div>
+    <!-- LIBRARY PAGE (MOROCCAN ARABIC) (HIDDEN INITIALLY) -->
+    <div class="library-page hidden">
+      <!-- Pictures -->
+      <div class="lang-pictures">
+        <img src="images/moroccootp.png" class="building-image" />
+        <div class="flag library-flag">
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/2/2c/Flag_of_Morocco.svg"
+          />
+        </div>
+      </div>
+      <!-- Lang Header -->
+      <div class="lang-header">
+        <div class="lang-title-before">MOROCCAN</div>
+        <div class="lang-title">ARABIC</div>
+        <div class="lang-subtitle">darija (دارجة)</div>
+        <div class="line"></div>
+        <div class="words-section"></div>
+      </div>
+      <!-- Word Library -->
+      <div class="outline"></div>
+    </div>
+
+
+
+    <!-- CURRENCY PAGE -->
+    <div class="currency-page page-wrapper">
+      <div class="language-section currency-section">
+  
+        <!-- Currency 1 -->
+        <div class="currency-row">
+          <div class="lang-box" id="currency-box1">
+            <div class="flag">
+              <img src="https://upload.wikimedia.org/wikipedia/en/b/be/Flag_of_England.svg" alt="English flag" width="26" height="26" loading="eager"/>
+            </div>
+            <div class="box-text" lang="en">
+              <!-- (<span class="currency-symbol currency-symbol1">£</span>) -->
+              <span id="currency-text-1">GBP</span>
+            </div>
+          </div>
+          <div class="vert-line"></div>
+          <div class="amount-box">
+            <p class="c-name" id="c-name1">Pounds</p>
+            <span class="currency-symbol1">£</span>
+            <input type="text" id="currency-input1" class="currency-input" data-currency="GBP" placeholder="0.00" autocomplete="off" inputmode="decimal" aria-autocomplete="none">
+          </div>
+        </div>
+    
+        <!-- Currency 2 -->
+        <div class="currency-row">
+          <div class="lang-box" id="currency-box2">
+            <div class="flag">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Flag_of_France.svg" alt="French flag" width="26" height="26" loading="eager"/>
+            </div>
+            <div class="box-text" lang="en">
+              <!-- (<span class="currency-symbol currency-symbol2">€</span>) -->
+              <span id="currency-text-2">EUR</span>
+            </div>
+          </div>
+          <div class="vert-line"></div>
+          <div class="amount-box">
+            <p class="c-name" id="c-name2">Euro</p>
+            <span class="currency-symbol2">€</span>
+            <input type="text" id="currency-input2" class="currency-input" data-currency="EUR" placeholder="0.00" autocomplete="off" inputmode="decimal" aria-autocomplete="none">
+          </div>
+        </div>
+    
+    
+        <!-- Currency Overlay -->
+    
+        <div class="overlay" id="currency-overlay">
+          <div class="langchoice-content">
+        
+            <!-- Input Section -->
+            <div class="langchoice-input">
+              <img src="images/close.svg" class="close-btn" onclick="closeCurrencyOverlay()"/>
+              <input type="text" id="currency-input" placeholder="Enter Currency Code or Country.."/>
+              <img id="currency-confirm" onclick="confirmCurrencySelection()" src="images/confirm.svg" class="confirm-arrow icon" alt="Confirm Arrow"/>
+            </div>
+        
+            <!-- Options Section -->
+            <div class="langchoice-options">
+        
+              <div class="section-title">
+                <p>Recently Used</p>
+                <button class="clear-btn" onclick="clearRecent()">Clear</button>
+              </div>
+        
+              <!-- Currency Options -->
+        
+              <div id="language-list"></div>
+        
+              <div class="section-title">
+                <p>Suggested</p>
+                <button class="clear-btn" onclick="clearRecent()">Clear</button>
+              </div>
+    
+              <li onclick="confirmLanguage('GBP', 'https://upload.wikimedia.org/wikipedia/en/b/be/Flag_of_England.svg')">
+                <div class="flag">
+                  <img src="https://upload.wikimedia.org/wikipedia/en/b/be/Flag_of_England.svg" />
+                </div>
+                <div class="langchoice-text">
+                  GBP <small>British Pound (£)</small>
+                </div>
+              </li>
+        
+              <li onclick="confirmLanguage('USD', 'https://upload.wikimedia.org/wikipedia/commons/a/a4/Flag_of_the_United_States.svg')">
+                <div class="flag">
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/a/a4/Flag_of_the_United_States.svg" />
+                </div>
+                <div class="langchoice-text">
+                  USD <small>US Dollar ($)</small>
+                </div>
+              </li>
+        
+              <li onclick="confirmLanguage('EUR', 'https://upload.wikimedia.org/wikipedia/commons/b/b7/Flag_of_Europe.svg')">
+                <div class="flag">
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/b/b7/Flag_of_Europe.svg" />
+                </div>
+                <div class="langchoice-text">
+                  EUR <small>Euro (€)</small>
+                </div>
+              </li>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+
+      <div class="c-update-wrapper">
+        <p class="last-c-update" id="accurate-c-conversion">? GBP = ? EUR</p>
+        <p class="last-c-update">Last updated: <span id="c-update-time">February 10, 2025 3:15pm GMT</span></p>
+      </div>
+
+      <div class="keypad">
+        <button>1</button> <button>2</button> <button>3</button>
+        <button>4</button> <button>5</button> <button>6</button>
+        <button>7</button> <button>8</button> <button>9</button>
+        <button>.</button> <button>0</button> <button class="delete">⌫</button>
+      </div>
+      <link rel="stylesheet" href="css/currency.css" class="css-loader">
+      <script src="js/currency.js"></script>
+    </div>
+  
+
+
+
+    <!-- SETTINGS PAGE (HIDDEN INITIALLY) -->
+    <div class="settings-page hidden">
+      <div class="settings-container settings-main">
+        <header class="settings-header">
+          <h1>Settings</h1>
+        </header>
+        <div class="settings-section">
+          <div class="settings-item">
+            <img src="images/settings-icons/profile.svg">
+            Profile
+          </div>
+          <div class="settings-item" onclick="showVoiceOptions()">
+            <img src="images/settings-icons/choose-voice.svg">
+            Choose Voice
+          </div>
+          <a href="https://insigh.to/b/poliiglot-bug-reporting" target="_blank" class="settings-item">
+            <img src="images/settings-icons/report-bug.svg" class="red-icon">
+            <span>Report A Bug</span>
+            <i class="fas fa-external-link-alt"></i>
+          </a>
+          <a href="https://discord.gg/J8QsAfhfpP" target="_blank" class="settings-item">
+            <img src="images/settings-icons/join-discord.svg" class="blue-icon">
+            <span>Join Discord</span>
+            <i class="fas fa-external-link-alt"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="settings-container choose-voice" style="display: none;">
+        <header class="settings-header">
+          <img src="images/back-btn.svg" onclick="showSettings()" class="back-btn" alt="Back">
+          <h1>Choose Voice</h1>
+        </header>
+        <div class="settings-section">
+          <div class="settings-item" data-voice="alloy" onclick="selectVoice('alloy')">
+            <img src="images/speak.svg">
+            Alloy
+          </div>
+          <div class="settings-item" data-voice="echo" onclick="selectVoice('echo')">
+            <img src="images/speak.svg">
+            Echo
+          </div>
+          <div class="settings-item" data-voice="fable" onclick="selectVoice('fable')">
+            <img src="images/speak.svg">
+            Fable
+          </div>
+          <div class="settings-item" data-voice="onyx" onclick="selectVoice('onyx')">
+            <img src="images/speak.svg">
+            Onyx
+          </div>
+          <div class="settings-item" data-voice="nova" onclick="selectVoice('nova')">
+            <img src="images/speak.svg">
+            Nova
+          </div>
+          <div class="settings-item" data-voice="shimmer" onclick="selectVoice('shimmer')">
+            <img src="images/speak.svg">
+            Shimmer
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <!-- <img src="images/profile.svg" class="profile-icon"> -->
+
+
+    <!-- Log In / Sign Up Buttons -->
+    <!-- <div class="buttons-container">
+      <a href="login.html" id="login-button" class="secondary-button">Log In</button>
+      <button id="signup-button" class="primary-button">Sign Up</button>
+    </div> -->
+
+
+  </body>
+</html>
